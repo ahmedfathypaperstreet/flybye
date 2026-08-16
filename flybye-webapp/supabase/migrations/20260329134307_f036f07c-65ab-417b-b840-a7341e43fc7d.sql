@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ADD COLUMN connection_mode text DEFAULT 'open';
