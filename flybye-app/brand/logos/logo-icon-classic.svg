@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bgIcon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A1A2E"/>
+      <stop offset="100%" style="stop-color:#16213E"/>
+    </linearGradient>
+    <linearGradient id="planeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0EA5C9"/>
+      <stop offset="100%" style="stop-color:#0284C7"/>
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0EA5C9" stop-opacity="0.3"/>
+      <stop offset="100%" style="stop-color:#6444D4" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background square with rounded corners -->
+  <rect width="120" height="120" rx="26" fill="url(#bgIcon)"/>
+
+  <!-- Glow ring -->
+  <circle cx="60" cy="60" r="42" fill="url(#glowGrad)"/>
+  <circle cx="60" cy="60" r="42" fill="none" stroke="#0EA5C9" stroke-width="1" opacity="0.4"/>
+
+  <!-- Plane -->
+  <g transform="translate(60,60) rotate(-35)">
+    <!-- Fuselage -->
+    <ellipse cx="0" cy="0" rx="24" ry="7" fill="url(#planeGrad)"/>
+    <!-- Left wing -->
+    <path d="M4,-5 L-8,-22 L-16,-17 L-4,-3 Z" fill="url(#planeGrad)"/>
+    <!-- Right wing -->
+    <path d="M4,5 L-8,22 L-16,17 L-4,3 Z" fill="url(#planeGrad)" opacity="0.85"/>
+    <!-- Tail -->
+    <path d="M-20,-3 L-28,-12 L-24,-9 L-24,0 Z" fill="url(#planeGrad)" opacity="0.9"/>
+    <!-- Nose cone -->
+    <ellipse cx="22" cy="0" rx="5" ry="4" fill="url(#planeGrad)"/>
+  </g>
+
+  <!-- Small stars / dots suggesting flight path -->
+  <circle cx="88" cy="28" r="2" fill="#0EA5C9" opacity="0.5"/>
+  <circle cx="94" cy="36" r="1.2" fill="#0EA5C9" opacity="0.3"/>
+  <circle cx="82" cy="22" r="1.5" fill="#38BDF8" opacity="0.4"/>
+</svg>

@@ -1,0 +1,28 @@
+<!--
+  Paste these into android/app/src/main/AndroidManifest.xml as indicated.
+  Don't replace the file — Flutter's default manifest already has what it needs.
+-->
+
+<!-- ============================================================
+  Inside <manifest> at the top level (before <application>):
+============================================================= -->
+
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+<!-- Pre-Android 13 photo permission. READ_MEDIA_IMAGES covers 13+. -->
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    android:maxSdkVersion="32" />
+
+<!-- ============================================================
+  Inside the main <activity> (the one with android.intent.action.MAIN),
+  AFTER the existing intent-filter:
+============================================================= -->
+
+<!-- Password-reset deep link -->
+<intent-filter>
+  <action android:name="android.intent.action.VIEW" />
+  <category android:name="android.intent.category.DEFAULT" />
+  <category android:name="android.intent.category.BROWSABLE" />
+  <data android:scheme="flybye" android:host="reset-password" />
+</intent-filter>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"  stop-color="#1A1A2E"/>
+      <stop offset="100%" stop-color="#0E1A2E"/>
+    </linearGradient>
+    <linearGradient id="planeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#7DD3FC"/>
+      <stop offset="100%" stop-color="#0EA5C9"/>
+    </linearGradient>
+    <radialGradient id="destGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#67E8F9" stop-opacity="0.95"/>
+      <stop offset="55%"  stop-color="#22D3EE" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="centerGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%"   stop-color="#0EA5C9" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#0EA5C9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background: dark navy rounded square -->
+  <rect x="0" y="0" width="1024" height="1024" rx="220" ry="220" fill="url(#bgGrad)"/>
+
+  <!-- Soft center glow -->
+  <ellipse cx="512" cy="540" rx="480" ry="360" fill="url(#centerGlow)"/>
+
+  <!-- Radar grid: faint concentric arcs + horizon line at the bottom -->
+  <g stroke="#38BDF8" fill="none" opacity="0.14">
+    <ellipse cx="512" cy="940" rx="720" ry="110" stroke-width="2"/>
+    <ellipse cx="512" cy="940" rx="540" ry="80"  stroke-width="2"/>
+    <ellipse cx="512" cy="940" rx="360" ry="55"  stroke-width="2"/>
+    <ellipse cx="512" cy="940" rx="200" ry="32"  stroke-width="2"/>
+    <line x1="80" y1="800" x2="944" y2="800" stroke-width="1.5"/>
+  </g>
+
+  <!-- Dotted trajectory from plane to destination -->
+  <path d="M 460 470 Q 640 320 768 232"
+        stroke="#7DD3FC"
+        stroke-width="22"
+        stroke-dasharray="0 60"
+        stroke-linecap="round"
+        fill="none"
+        opacity="0.85"/>
+
+  <!-- Destination glow + dot -->
+  <circle cx="768" cy="232" r="150" fill="url(#destGlow)"/>
+  <circle cx="768" cy="232" r="38"  fill="#7DD3FC"/>
+  <circle cx="768" cy="232" r="14"  fill="#FFFFFF"/>
+
+  <!-- Paper airplane wireframe (apex top-right, base lower-left) -->
+  <g stroke="url(#planeGrad)" stroke-width="18" stroke-linejoin="round" stroke-linecap="round" fill="none">
+    <!-- Top wing -->
+    <path d="M 590 280 L 240 600 L 460 540 Z"/>
+    <!-- Bottom wing -->
+    <path d="M 590 280 L 460 540 L 540 660 Z"/>
+    <!-- Spine (fold line) -->
+    <path d="M 590 280 L 460 540"/>
+  </g>
+</svg>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 500" width="1024" height="500">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A1A2E"/>
+      <stop offset="100%" stop-color="#16213E"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0EA5C9"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="text" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0EA5C9"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#0EA5C9" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#16213E" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="1024" height="500" fill="url(#bg)"/>
+  <ellipse cx="240" cy="260" rx="320" ry="240" fill="url(#glow)"/>
+  <ellipse cx="820" cy="180" rx="180" ry="120" fill="url(#glow)"/>
+
+  <!-- decorative dots (flight path) -->
+  <g fill="#0EA5C9" opacity="0.55">
+    <circle cx="170" cy="80"  r="3"/>
+    <circle cx="200" cy="100" r="2"/>
+    <circle cx="240" cy="110" r="2.5"/>
+    <circle cx="900" cy="380" r="3"/>
+    <circle cx="940" cy="410" r="2"/>
+    <circle cx="970" cy="430" r="2.5"/>
+  </g>
+
+  <!-- icon mark left -->
+  <g transform="translate(96 250)">
+    <rect x="-90" y="-90" width="180" height="180" rx="38" fill="url(#bg)" stroke="#0EA5C9" stroke-width="1.5" stroke-opacity="0.4"/>
+    <circle cx="0" cy="0" r="62" fill="#0EA5C9" opacity="0.18"/>
+    <circle cx="0" cy="0" r="62" fill="none" stroke="#0EA5C9" stroke-width="1" opacity="0.5"/>
+    <g transform="rotate(-35)">
+      <ellipse cx="0" cy="0" rx="42" ry="11" fill="url(#cyan)"/>
+      <path d="M6,-7 L-12,-34 L-26,-26 L-6,-5 Z" fill="url(#cyan)"/>
+      <path d="M6,7 L-12,34 L-26,26 L-6,5 Z" fill="url(#cyan)" opacity="0.85"/>
+      <path d="M-32,-5 L-46,-19 L-40,-15 L-40,0 Z" fill="url(#cyan)" opacity="0.9"/>
+      <ellipse cx="36" cy="0" rx="8" ry="6" fill="url(#cyan)"/>
+    </g>
+  </g>
+
+  <!-- wordmark + tagline -->
+  <g transform="translate(280 180)">
+    <text x="0" y="0" font-family="Inter, Helvetica, Arial, sans-serif"
+          font-weight="800" font-size="120" letter-spacing="-3"
+          fill="url(#text)">FlyBye</text>
+    <text x="6" y="80" font-family="Inter, Helvetica, Arial, sans-serif"
+          font-weight="500" font-size="40" letter-spacing="-0.5"
+          fill="#F1F5F9" opacity="0.95">Meet someone at your terminal.</text>
+    <text x="6" y="140" font-family="Inter, Helvetica, Arial, sans-serif"
+          font-weight="400" font-size="22" letter-spacing="0.3"
+          fill="#0EA5C9" opacity="0.9">VERIFIED · AT YOUR AIRPORT · RIGHT NOW</text>
+  </g>
+</svg>

@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=390, initial-scale=1"/>
+<title>FlyBye — Screenshot Mockups</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg:       #1A1A2E;
+    --surface:  #16213E;
+    --elevated: #1F2B47;
+    --border:   #2A3A5C;
+    --primary:  #0EA5C9;
+    --accent:   #F97316;
+    --pink:     #EC4899;
+    --success:  #10B981;
+    --text:     #F0F4FF;
+    --muted:    #8899BB;
+    --gold:     #EAB308;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0A0A0F;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* NAV */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: #0A0A0F;
+    display: flex; gap: 8px; padding: 12px 16px;
+    flex-wrap: wrap;
+  }
+  .nav button {
+    background: #16213E; color: #F0F4FF;
+    border: 1px solid #2A3A5C; border-radius: 20px;
+    padding: 6px 14px; font-size: 12px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .nav button.active { background: #0EA5C9; border-color: #0EA5C9; }
+
+  /* SCREEN WRAPPER */
+  .screen {
+    width: 390px;
+    min-height: 844px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    margin-top: 60px;
+  }
+  .screen.active { display: flex; }
+
+  /* STATUS BAR */
+  .statusbar {
+    height: 44px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px 0;
+    flex-shrink: 0;
+  }
+  .statusbar .time { font-size: 15px; font-weight: 600; color: var(--text); }
+  .statusbar .icons { display: flex; gap: 6px; align-items: center; }
+  .statusbar .icons span { font-size: 12px; color: var(--text); }
+
+  /* TOP NAV */
+  .topnav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px;
+    flex-shrink: 0;
+  }
+  .topnav .logo {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px; font-weight: 800;
+    background: linear-gradient(135deg, var(--primary), #0284C7);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .topnav .icon-btn {
+    width: 38px; height: 38px;
+    background: var(--elevated); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 18px;
+  }
+
+  /* BOTTOM TAB BAR */
+  .tabbar {
+    height: 82px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex; align-items: flex-start; justify-content: space-around;
+    padding-top: 12px;
+    flex-shrink: 0;
+    margin-top: auto;
+  }
+  .tab {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    color: var(--muted); font-size: 10px;
+  }
+  .tab.active { color: var(--primary); }
+  .tab-icon { font-size: 22px; }
+
+  /* GRADIENT OVERLAY */
+  .grad { background: linear-gradient(to bottom, transparent, rgba(26,26,46,0.95)); }
+
+  /* ═══════════════════════════════════════════
+     SCREEN 1 — DISCOVER
+  ═══════════════════════════════════════════ */
+  #s1 .card-stack {
+    flex: 1; padding: 0 20px 12px;
+    position: relative;
+  }
+  .swipe-card {
+    position: absolute; left: 20px; right: 20px;
+    height: 480px;
+    border-radius: 24px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .swipe-card.back {
+    top: 16px; transform: scale(0.95);
+    background: var(--elevated);
+    z-index: 1;
+  }
+  .swipe-card.front {
+    top: 0; z-index: 2;
+  }
+  .card-img {
+    width: 100%; height: 100%; object-fit: cover;
+    background: linear-gradient(160deg, #1F2B47 0%, #0EA5C9 50%, #0284C7 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-avatar {
+    width: 160px; height: 160px; border-radius: 50%;
+    background: linear-gradient(135deg, #0EA5C9, #EC4899);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 72px;
+  }
+  .card-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(10,10,15,0.95) 60%, transparent);
+  }
+  .card-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 26px; font-weight: 800; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card-sub { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag {
+    background: rgba(14,165,201,0.15);
+    border: 1px solid rgba(14,165,201,0.3);
+    border-radius: 20px; padding: 4px 10px;
+    font-size: 11px; color: var(--primary); font-weight: 600;
+  }
+  .tag.airport {
+    background: rgba(31,43,71,0.8);
+    border-color: var(--border);
+    color: var(--text);
+  }
+  .action-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 20px; padding: 16px 20px 8px;
+    flex-shrink: 0;
+  }
+  .action-btn {
+    width: 62px; height: 62px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .btn-pass { background: var(--elevated); border: 1px solid var(--border); }
+  .btn-like { background: linear-gradient(135deg, var(--primary), #0284C7); }
+  .btn-super { background: linear-gradient(135deg, var(--gold), #CA8A04); width: 50px; height: 50px; font-size: 20px; }
+
+  /* ═══════════════════════════════════════════
+     SCREEN 2 — MATCH
+  ═══════════════════════════════════════════ */
+  #s2 {
+    background: radial-gradient(ellipse at center top, rgba(14,165,201,0.25) 0%, var(--bg) 60%);
+    justify-content: center; align-items: center;
+  }
+  #s2 .match-content {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 40px 32px; text-align: center;
+  }
+  .match-avatars {
+    display: flex; align-items: center; gap: -20px;
+    margin-bottom: 32px; position: relative;
+  }
+  .match-av {
+    width: 110px; height: 110px; border-radius: 50%;
+    border: 3px solid var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 52px;
+    box-shadow: 0 0 30px rgba(14,165,201,0.4);
+  }
+  .match-av.left {
+    background: linear-gradient(135deg, #0EA5C9, #EC4899);
+    margin-right: -16px; z-index: 1;
+  }
+  .match-av.right {
+    background: linear-gradient(135deg, #F97316, #EAB308);
+    margin-left: -16px;
+  }
+  .match-heart {
+    position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    width: 30px; height: 30px;
+    background: var(--pink); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; z-index: 3;
+    box-shadow: 0 0 20px rgba(236,72,153,0.6);
+  }
+  .match-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 36px; font-weight: 900; color: var(--text);
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--pink));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .match-sub { color: var(--muted); font-size: 14px; line-height: 1.5; margin-bottom: 36px; }
+  .match-names { color: var(--text); font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+  .match-flight {
+    background: var(--elevated); border: 1px solid var(--border);
+    border-radius: 12px; padding: 10px 16px;
+    font-size: 13px; color: var(--muted); margin-bottom: 32px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-primary {
+    width: 100%; padding: 18px;
+    background: linear-gradient(135deg, var(--primary), #0284C7);
+    border-radius: 16px; color: white;
+    font-family: 'Outfit', sans-serif;
+    font-size: 17px; font-weight: 700;
+    text-align: center; margin-bottom: 12px;
+  }
+  .btn-glass {
+    width: 100%; padding: 16px;
+    background: var(--elevated); border: 1px solid var(--border);
+    border-radius: 16px; color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px; font-weight: 500; text-align: center;
+  }
+
+  /* ═══════════════════════════════════════════
+     SCREEN 3 — CHAT
+  ═══════════════════════════════════════════ */
+  #s3 .chat-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 20px 16px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .chat-av {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(135deg, #F97316, #EAB308);
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+    flex-shrink: 0;
+  }
+  .chat-name { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 16px; color: var(--text); }
+  .chat-status { font-size: 12px; color: var(--success); }
+  .chat-back { margin-right: 4px; color: var(--muted); font-size: 22px; }
+
+  #s3 .messages {
+    flex: 1; padding: 16px 20px; display: flex;
+    flex-direction: column; gap: 12px; overflow: hidden;
+  }
+  .msg { display: flex; flex-direction: column; max-width: 75%; }
+  .msg.them { align-self: flex-start; }
+  .msg.me { align-self: flex-end; align-items: flex-end; }
+  .bubble {
+    padding: 12px 14px; border-radius: 18px;
+    font-size: 14px; line-height: 1.4;
+  }
+  .msg.them .bubble {
+    background: var(--elevated); color: var(--text);
+    border-bottom-left-radius: 4px;
+    border: 1px solid var(--border);
+  }
+  .msg.me .bubble {
+    background: linear-gradient(135deg, var(--primary), #0284C7);
+    color: white; border-bottom-right-radius: 4px;
+  }
+  .msg-time { font-size: 10px; color: var(--muted); margin-top: 3px; padding: 0 4px; }
+  .msg-date {
+    text-align: center; color: var(--muted); font-size: 11px;
+    margin: 4px 0; align-self: center;
+  }
+  .chat-input-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px 28px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .chat-input {
+    flex: 1; background: var(--elevated); border: 1px solid var(--border);
+    border-radius: 24px; padding: 12px 18px;
+    color: var(--muted); font-size: 14px; font-family: 'DM Sans', sans-serif;
+  }
+  .send-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), #0284C7);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+
+  /* ═══════════════════════════════════════════
+     SCREEN 4 — FLIGHTS
+  ═══════════════════════════════════════════ */
+  #s4 .scroll { flex: 1; padding: 0 20px 20px; overflow: hidden; }
+  .section-label {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    letter-spacing: 0.8px; text-transform: uppercase;
+    margin-bottom: 10px; padding-left: 4px;
+  }
+  .flight-card {
+    background: var(--elevated); border: 1px solid var(--border);
+    border-radius: 20px; padding: 16px; margin-bottom: 12px;
+  }
+  .flight-row { display: flex; align-items: center; justify-content: space-between; }
+  .airport-code {
+    font-family: 'Outfit', sans-serif;
+    font-size: 32px; font-weight: 800; color: var(--text);
+  }
+  .airport-name { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .flight-arrow { color: var(--primary); font-size: 20px; }
+  .flight-meta {
+    display: flex; align-items: center; gap: 12px;
+    margin-top: 14px; padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .flight-chip {
+    background: rgba(14,165,201,0.1); border: 1px solid rgba(14,165,201,0.2);
+    border-radius: 20px; padding: 4px 10px;
+    font-size: 12px; color: var(--primary); font-weight: 600;
+  }
+  .input-field {
+    background: var(--elevated); border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px 16px;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .input-icon { color: var(--muted); font-size: 18px; flex-shrink: 0; }
+  .input-text { color: var(--text); font-size: 15px; }
+  .input-placeholder { color: var(--muted); font-size: 15px; }
+  .nearby-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin: 16px 0 10px;
+  }
+  .see-all { color: var(--primary); font-size: 13px; font-weight: 600; }
+  .traveler-row {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--elevated); border: 1px solid var(--border);
+    border-radius: 16px; padding: 12px; margin-bottom: 8px;
+  }
+  .traveler-av {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+    flex-shrink: 0;
+  }
+  .traveler-name { font-weight: 700; color: var(--text); font-size: 14px; }
+  .traveler-flight { font-size: 12px; color: var(--muted); }
+  .traveler-badge {
+    margin-left: auto; background: rgba(14,165,201,0.1);
+    border: 1px solid rgba(14,165,201,0.2);
+    border-radius: 20px; padding: 4px 10px;
+    font-size: 11px; color: var(--primary); font-weight: 600;
+  }
+
+  /* ═══════════════════════════════════════════
+     SCREEN 5 — PROFILE
+  ═══════════════════════════════════════════ */
+  #s5 .scroll { flex: 1; padding: 0 0 0; overflow: hidden; }
+  .profile-hero {
+    height: 280px;
+    background: linear-gradient(160deg, #1F2B47 0%, #0EA5C9 60%, #0284C7 100%);
+    display: flex; align-items: flex-end;
+    padding: 0 20px 20px; position: relative;
+  }
+  .profile-av-large {
+    width: 88px; height: 88px; border-radius: 50%;
+    border: 3px solid white;
+    background: linear-gradient(135deg, #0EA5C9, #EC4899);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px; margin-right: 14px; flex-shrink: 0;
+  }
+  .profile-hero-info { padding-bottom: 4px; }
+  .profile-hero-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 24px; font-weight: 800; color: white;
+  }
+  .profile-hero-sub { font-size: 13px; color: rgba(255,255,255,0.7); }
+  .verified-badge {
+    position: absolute; top: 14px; right: 14px;
+    background: rgba(16,185,129,0.15);
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 20px; padding: 6px 12px;
+    font-size: 12px; color: var(--success); font-weight: 600;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .profile-body { padding: 16px 20px; }
+  .profile-stat-row {
+    display: flex; gap: 10px; margin-bottom: 14px;
+  }
+  .stat-card {
+    flex: 1; background: var(--elevated); border: 1px solid var(--border);
+    border-radius: 16px; padding: 14px; text-align: center;
+  }
+  .stat-num {
+    font-family: 'Outfit', sans-serif;
+    font-size: 26px; font-weight: 800; color: var(--text);
+  }
+  .stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .profile-section {
+    background: var(--elevated); border: 1px solid var(--border);
+    border-radius: 20px; padding: 16px; margin-bottom: 12px;
+  }
+  .profile-section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 10px;
+  }
+  .tier-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: linear-gradient(135deg, rgba(234,179,8,0.15), rgba(202,138,4,0.1));
+    border: 1px solid rgba(234,179,8,0.3);
+    border-radius: 20px; padding: 6px 14px;
+    font-size: 13px; color: var(--gold); font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <button class="active" onclick="show(1)">1 · Discover</button>
+  <button onclick="show(2)">2 · Match</button>
+  <button onclick="show(3)">3 · Chat</button>
+  <button onclick="show(4)">4 · Flights</button>
+  <button onclick="show(5)">5 · Profile</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 1 — DISCOVER
+══════════════════════════════════════ -->
+<div class="screen active" id="s1">
+  <div class="statusbar">
+    <span class="time">9:41</span>
+    <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+  </div>
+  <div class="topnav">
+    <div class="logo">FlyBye</div>
+    <div style="display:flex;gap:8px">
+      <div class="icon-btn">⚙</div>
+    </div>
+  </div>
+
+  <!-- Airport context -->
+  <div style="padding:0 20px 10px;display:flex;align-items:center;gap:8px">
+    <div style="background:rgba(14,165,201,0.1);border:1px solid rgba(14,165,201,0.2);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--primary);font-weight:600;display:flex;align-items:center;gap:6px">
+      ✈ JFK · Terminal 4
+    </div>
+    <div style="color:var(--muted);font-size:12px">24 travelers nearby</div>
+  </div>
+
+  <!-- Card stack -->
+  <div class="card-stack" style="position:relative;flex:1;padding:0 20px 8px;">
+    <!-- Back card -->
+    <div class="swipe-card back" style="background:var(--elevated);display:flex;align-items:center;justify-content:center;">
+      <div style="text-align:center;color:var(--muted);">
+        <div style="font-size:40px;margin-bottom:8px">👤</div>
+        <div style="font-size:13px">Next traveler</div>
+      </div>
+    </div>
+    <!-- Front card -->
+    <div class="swipe-card front">
+      <div class="card-img">
+        <div class="card-avatar">🧑</div>
+      </div>
+      <div class="card-info">
+        <div class="card-name">Sofia M., 28</div>
+        <div class="card-sub">📍 JFK → LHR · Layover 3h 20m</div>
+        <div class="tags">
+          <span class="tag airport">✈ Terminal 4</span>
+          <span class="tag">Travel</span>
+          <span class="tag">Coffee ☕</span>
+          <span class="tag">Verified ✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="action-row">
+    <div class="action-btn btn-pass">✕</div>
+    <div class="action-btn btn-super">⭐</div>
+    <div class="action-btn btn-like">♥</div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab active"><div class="tab-icon">✈</div><div>Discover</div></div>
+    <div class="tab"><div class="tab-icon">💬</div><div>Chats</div></div>
+    <div class="tab"><div class="tab-icon">♥</div><div>Matches</div></div>
+    <div class="tab"><div class="tab-icon">👤</div><div>Profile</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2 — MATCH
+══════════════════════════════════════ -->
+<div class="screen" id="s2">
+  <div class="statusbar">
+    <span class="time">9:41</span>
+    <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+  </div>
+  <div class="match-content">
+    <div style="margin-bottom:12px">
+      <div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600">It's a</div>
+    </div>
+    <div class="match-title">FlyBye Match! ✈</div>
+    <div class="match-avatars" style="margin:24px 0 20px">
+      <div class="match-av left">🧑</div>
+      <div class="match-heart">♥</div>
+      <div class="match-av right">👩</div>
+    </div>
+    <div class="match-names">You & Sofia both swiped right</div>
+    <div class="match-sub" style="margin:8px 0 16px">You're both at JFK Terminal 4 right now.<br>Your match expires when her flight boards.</div>
+    <div class="match-flight">
+      <span>✈</span>
+      <span>Sofia boards BA178 → LHR at 12:45</span>
+    </div>
+    <div style="width:100%">
+      <div class="btn-primary">💬 Send a Message</div>
+      <div class="btn-glass">Keep Swiping</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3 — CHAT
+══════════════════════════════════════ -->
+<div class="screen" id="s3">
+  <div class="statusbar">
+    <span class="time">9:41</span>
+    <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+  </div>
+
+  <div class="chat-header">
+    <span class="chat-back">‹</span>
+    <div class="chat-av">👩</div>
+    <div>
+      <div class="chat-name">Sofia M.</div>
+      <div class="chat-status">● Active now · JFK T4</div>
+    </div>
+    <div style="margin-left:auto;color:var(--muted);font-size:20px">⋮</div>
+  </div>
+
+  <div class="messages">
+    <div class="msg-date">Today · Match made 9:38 AM</div>
+
+    <div class="msg them">
+      <div class="bubble">Hey! Small world — I saw your profile and thought your travel vibe matched mine 😄</div>
+      <div class="msg-time">9:38 AM</div>
+    </div>
+
+    <div class="msg me">
+      <div class="bubble">Haha right?! Where are you headed? I saw LHR on your card 🇬🇧</div>
+      <div class="msg-time">9:39 AM</div>
+    </div>
+
+    <div class="msg them">
+      <div class="bubble">London for a week! First time actually. Any tips?</div>
+      <div class="msg-time">9:39 AM</div>
+    </div>
+
+    <div class="msg me">
+      <div class="bubble">Oh you're going to love it. Skip the tourist traps — hit Borough Market first thing 🍕</div>
+      <div class="msg-time">9:40 AM</div>
+    </div>
+
+    <div class="msg them">
+      <div class="bubble">Ok adding it now. Hey — want to grab a coffee before we both board? I have 2 hours 😊</div>
+      <div class="msg-time">9:41 AM</div>
+    </div>
+  </div>
+
+  <div class="chat-input-row">
+    <div class="chat-input">Message Sofia...</div>
+    <div class="send-btn">↑</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 4 — FLIGHTS
+══════════════════════════════════════ -->
+<div class="screen" id="s4">
+  <div class="statusbar">
+    <span class="time">9:41</span>
+    <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+  </div>
+  <div class="topnav">
+    <div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:700;color:var(--text)">My Flights</div>
+    <div class="icon-btn">+</div>
+  </div>
+
+  <div class="scroll" style="padding:0 20px 20px;flex:1;overflow:hidden">
+    <div class="section-label">Active Flight</div>
+    <div class="flight-card">
+      <div class="flight-row">
+        <div>
+          <div class="airport-code">JFK</div>
+          <div class="airport-name">John F. Kennedy</div>
+        </div>
+        <div style="text-align:center">
+          <div class="flight-arrow">→</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">AA 205</div>
+        </div>
+        <div style="text-align:right">
+          <div class="airport-code">LHR</div>
+          <div class="airport-name">London Heathrow</div>
+        </div>
+      </div>
+      <div class="flight-meta">
+        <span class="flight-chip">✈ Today · 12:30</span>
+        <span class="flight-chip">T4</span>
+        <span style="margin-left:auto;font-size:12px;color:var(--success);font-weight:600">● On Time</span>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:8px">24 Travelers at JFK Now</div>
+
+    <div class="traveler-row">
+      <div class="traveler-av" style="background:linear-gradient(135deg,#EC4899,#F97316)">👩</div>
+      <div>
+        <div class="traveler-name">Sofia M.</div>
+        <div class="traveler-flight">JFK → LHR · Boards 12:45</div>
+      </div>
+      <div class="traveler-badge">Match!</div>
+    </div>
+
+    <div class="traveler-row">
+      <div class="traveler-av" style="background:linear-gradient(135deg,#0EA5C9,#10B981)">🧑</div>
+      <div>
+        <div class="traveler-name">Marcus T.</div>
+        <div class="traveler-flight">JFK → CDG · Boards 13:10</div>
+      </div>
+      <div class="traveler-badge">View</div>
+    </div>
+
+    <div class="traveler-row">
+      <div class="traveler-av" style="background:linear-gradient(135deg,#EAB308,#F97316)">👩</div>
+      <div>
+        <div class="traveler-name">Priya K.</div>
+        <div class="traveler-flight">JFK → DXB · Boards 14:00</div>
+      </div>
+      <div class="traveler-badge">View</div>
+    </div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab"><div class="tab-icon">✈</div><div>Discover</div></div>
+    <div class="tab"><div class="tab-icon">💬</div><div>Chats</div></div>
+    <div class="tab active"><div class="tab-icon">🛫</div><div>Flights</div></div>
+    <div class="tab"><div class="tab-icon">👤</div><div>Profile</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 5 — PROFILE
+══════════════════════════════════════ -->
+<div class="screen" id="s5">
+  <div class="statusbar">
+    <span class="time">9:41</span>
+    <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+  </div>
+
+  <div class="profile-hero">
+    <div class="verified-badge">✓ Verified</div>
+    <div class="profile-av-large">🧑</div>
+    <div class="profile-hero-info">
+      <div class="profile-hero-name">Amar M., 30</div>
+      <div class="profile-hero-sub">📍 New York City · 14 trips this year</div>
+    </div>
+  </div>
+
+  <div style="flex:1;overflow:hidden;padding:16px 20px 0">
+    <div class="profile-stat-row">
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--primary)">47</div>
+        <div class="stat-label">Matches</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--success)">14</div>
+        <div class="stat-label">Trips</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--gold)">4.9</div>
+        <div class="stat-label">Rating</div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-section-title">Subscription</div>
+      <div class="tier-badge">⭐ First Class</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:8px">Priority discovery · Unlimited matches · Read receipts</div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-section-title">About Me</div>
+      <div style="font-size:13px;color:#C8D4EE;line-height:1.5">Frequent flyer, coffee evangelist, and always down to explore a new city with good company ✈️</div>
+    </div>
+
+    <div class="profile-section" style="display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div class="profile-section-title" style="margin-bottom:2px">Identity Verified</div>
+        <div style="font-size:12px;color:var(--muted)">ID confirmed · May 2026</div>
+      </div>
+      <div style="color:var(--success);font-size:24px">✓</div>
+    </div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab"><div class="tab-icon">✈</div><div>Discover</div></div>
+    <div class="tab"><div class="tab-icon">💬</div><div>Chats</div></div>
+    <div class="tab"><div class="tab-icon">🛫</div><div>Flights</div></div>
+    <div class="tab active"><div class="tab-icon">👤</div><div>Profile</div></div>
+  </div>
+</div>
+
+<script>
+  function show(n) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById('s' + n).classList.add('active');
+    document.querySelectorAll('.nav button')[n-1].classList.add('active');
+  }
+</script>
+</body>
+</html>

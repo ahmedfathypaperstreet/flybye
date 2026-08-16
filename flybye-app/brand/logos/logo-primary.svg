@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="400" height="120">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A1A2E"/>
+      <stop offset="100%" style="stop-color:#16213E"/>
+    </linearGradient>
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0EA5C9"/>
+      <stop offset="100%" style="stop-color:#0284C7"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0EA5C9"/>
+      <stop offset="100%" style="stop-color:#38BDF8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="120" rx="16" fill="url(#bgGrad)"/>
+
+  <!-- Icon mark: circle with plane -->
+  <circle cx="60" cy="60" r="38" fill="url(#iconGrad)" opacity="0.15"/>
+  <circle cx="60" cy="60" r="38" fill="none" stroke="url(#iconGrad)" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- Plane body -->
+  <g transform="translate(60,60) rotate(-30)">
+    <!-- Fuselage -->
+    <ellipse cx="0" cy="0" rx="22" ry="6" fill="url(#iconGrad)"/>
+    <!-- Left wing -->
+    <path d="M2,-4 L-8,-18 L-14,-14 L-4,-2 Z" fill="url(#iconGrad)"/>
+    <!-- Right wing -->
+    <path d="M2,4 L-8,18 L-14,14 L-4,2 Z" fill="url(#iconGrad)" opacity="0.8"/>
+    <!-- Tail fin -->
+    <path d="M-18,-3 L-24,-10 L-20,-8 L-20,0 Z" fill="url(#iconGrad)"/>
+    <!-- Nose -->
+    <ellipse cx="20" cy="0" rx="4" ry="3" fill="url(#iconGrad)"/>
+  </g>
+
+  <!-- Wordmark: FlyBye -->
+  <text x="116" y="70" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="44" fill="url(#textGrad)" letter-spacing="-1">FlyBye</text>
+
+  <!-- Tagline -->
+  <text x="118" y="91" font-family="Arial, Helvetica, sans-serif" font-weight="400" font-size="13" fill="#8899BB" letter-spacing="0.5">Making layovers less lonely.</text>
+</svg>

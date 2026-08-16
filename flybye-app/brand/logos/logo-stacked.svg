@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="sBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A1A2E"/>
+      <stop offset="100%" style="stop-color:#16213E"/>
+    </linearGradient>
+    <linearGradient id="sIconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0EA5C9"/>
+      <stop offset="100%" style="stop-color:#0284C7"/>
+    </linearGradient>
+    <linearGradient id="sTextGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0EA5C9"/>
+      <stop offset="100%" style="stop-color:#38BDF8"/>
+    </linearGradient>
+    <linearGradient id="sGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0EA5C9" stop-opacity="0.2"/>
+      <stop offset="100%" style="stop-color:#6444D4" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="200" height="200" rx="28" fill="url(#sBgGrad)"/>
+
+  <!-- Glow -->
+  <circle cx="100" cy="80" r="55" fill="url(#sGlowGrad)"/>
+  <circle cx="100" cy="80" r="50" fill="none" stroke="#0EA5C9" stroke-width="1" opacity="0.3"/>
+
+  <!-- Plane icon centered -->
+  <g transform="translate(100,80) rotate(-35)">
+    <ellipse cx="0" cy="0" rx="26" ry="7.5" fill="url(#sIconGrad)"/>
+    <path d="M4,-5 L-9,-24 L-18,-18 L-5,-3 Z" fill="url(#sIconGrad)"/>
+    <path d="M4,5 L-9,24 L-18,18 L-5,3 Z" fill="url(#sIconGrad)" opacity="0.85"/>
+    <path d="M-22,-3 L-30,-13 L-26,-10 L-26,0 Z" fill="url(#sIconGrad)"/>
+    <ellipse cx="24" cy="0" rx="5" ry="4" fill="url(#sIconGrad)"/>
+  </g>
+
+  <!-- Dots -->
+  <circle cx="148" cy="42" r="2.5" fill="#0EA5C9" opacity="0.5"/>
+  <circle cx="155" cy="52" r="1.5" fill="#38BDF8" opacity="0.35"/>
+  <circle cx="140" cy="36" r="1.8" fill="#0EA5C9" opacity="0.4"/>
+
+  <!-- Wordmark below -->
+  <text x="100" y="150" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="38" fill="url(#sTextGrad)" letter-spacing="-1">FlyBye</text>
+
+  <!-- Tagline -->
+  <text x="100" y="172" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="400" font-size="11" fill="#8899BB" letter-spacing="1">MAKING LAYOVERS LESS LONELY</text>
+</svg>

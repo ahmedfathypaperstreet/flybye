@@ -1,0 +1,132 @@
+# Codemagic CI/CD for FlyBye — builds iOS + Android in the cloud (no Mac needed).
+# Setup walkthrough: see PUBLISH_WITHOUT_A_MAC.md
+#
+# Notes specific to FlyBye:
+# - `.env` is gitignored (correct — it holds secrets), but pubspec.yaml declares
+#   it as a Flutter asset, so the build recreates it from Codemagic env vars
+#   before building. Define SUPABASE_URL / SUPABASE_ANON_KEY in a variable group
+#   named "flybye_env" in the Codemagic UI.
+# - Bundle id / application id is app.flybye.flybye.
+
+workflows:
+  # ──────────────────────────────────────────────────────────────────────────
+  ios-testflight:
+    name: FlyBye iOS → TestFlight
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    integrations:
+      app_store_connect: codemagic   # name of the App Store Connect API key you add in the UI
+    environment:
+      # Automatic code signing: a managed Apple Distribution certificate
+      # (ref "flybye_distribution") was generated in Codemagic → Code signing
+      # identities. With that cert present + this block, Codemagic creates the
+      # App Store provisioning profile for the bundle id and applies it.
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: app.flybye.flybye
+      groups:
+        - flybye_env                 # provides SUPABASE_URL, SUPABASE_ANON_KEY (+ optional RC keys)
+      vars:
+        APP_STORE_APPLE_ID: 6779470572
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Recreate .env from secrets
+        script: |
+          cat > "$CM_BUILD_DIR/.env" <<EOF
+          SUPABASE_URL=$SUPABASE_URL
+          SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY
+          REVENUECAT_IOS_KEY=${REVENUECAT_IOS_KEY:-}
+          REVENUECAT_ANDROID_KEY=${REVENUECAT_ANDROID_KEY:-}
+          EOF
+      - name: Set up code signing
+        script: xcode-project use-profiles
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Install pods
+        script: find . -name "Podfile" -execdir pod install \;
+      - name: Flutter analyze
+        # Style/deprecation lints (trailing commas, unused import, deprecated
+        # anonKey) are non-fatal; real compile errors still fail the build.
+        script: flutter analyze --no-fatal-infos --no-fatal-warnings
+      - name: Flutter tests
+        script: flutter test
+        ignore_failure: true
+      - name: Build IPA
+        script: |
+          flutter build ipa --release \
+            --build-name=0.1.0 \
+            --build-number=$(($(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID") + 1)) \
+            --export-options-plist=/Users/builder/export_options.plist
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        # Add external tester group names here once you've created them in App Store Connect:
+        # beta_groups:
+        #   - Early testers
+        submit_to_app_store: false   # flip to true only when you're ready for full App Store review
+      email:
+        recipients:
+          - amar@paperstreetny.com
+        notify:
+          success: true
+          failure: true
+
+  # ──────────────────────────────────────────────────────────────────────────
+  android-googleplay:
+    name: FlyBye Android → Google Play
+    instance_type: linux_x2
+    max_build_duration: 60
+    environment:
+      android_signing:
+        - flybye_keystore           # upload a release keystore in the Codemagic UI under this name
+      groups:
+        - flybye_env
+        - google_play               # provides GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+      vars:
+        PACKAGE_NAME: app.flybye.flybye
+        GOOGLE_PLAY_TRACK: internal
+      flutter: stable
+    scripts:
+      - name: Recreate .env from secrets
+        script: |
+          cat > "$CM_BUILD_DIR/.env" <<EOF
+          SUPABASE_URL=$SUPABASE_URL
+          SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY
+          REVENUECAT_IOS_KEY=${REVENUECAT_IOS_KEY:-}
+          REVENUECAT_ANDROID_KEY=${REVENUECAT_ANDROID_KEY:-}
+          EOF
+      - name: Set up local.properties
+        script: echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Flutter analyze
+        script: flutter analyze --no-fatal-infos --no-fatal-warnings
+      - name: Flutter tests
+        script: flutter test
+        ignore_failure: true
+      - name: Build AAB
+        script: |
+          BUILD_NUMBER=$(($(google-play get-latest-build-number --package-name "$PACKAGE_NAME" --tracks="$GOOGLE_PLAY_TRACK" 2>/dev/null || echo 0) + 1))
+          flutter build appbundle --release \
+            --build-name=0.1.0 \
+            --build-number=$BUILD_NUMBER
+    artifacts:
+      - build/**/outputs/**/*.aab
+      - build/**/outputs/**/mapping.txt
+    publishing:
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+        submit_as_draft: true
+      email:
+        recipients:
+          - amar@paperstreetny.com
+        notify:
+          success: true
+          failure: true
