@@ -61,7 +61,7 @@ function supabaseForUser(ctx) {
 var get_my_profile_default = defineTool({
   name: "get_my_profile",
   title: "Get my profile",
-  description: "Get the signed-in traveler's FlyBye profile, including verification status and connection mode.",
+  description: "Get the signed-in professional's FlyBye profile, including business identity and verification status.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (_input, ctx) => {
@@ -69,7 +69,7 @@ var get_my_profile_default = defineTool({
       return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
     }
     const supabase = supabaseForUser(ctx);
-    const { data, error } = await supabase.from("profiles").select("display_name, bio, home_airport, airport_code, connection_mode, interests, travel_style, verified, verification_status").eq("user_id", ctx.getUserId()).maybeSingle();
+    const { data, error } = await supabase.from("profiles").select("display_name, bio, role, company, industry, intent, linkedin_url, home_airport, current_airport, present_until, verified, verification_status").eq("id", ctx.getUserId()).maybeSingle();
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
     if (!data) return { content: [{ type: "text", text: "No profile found for this account." }] };
     return {
@@ -140,26 +140,23 @@ var add_flight_default = defineTool3({
 import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.26.2";
 import { z as z3 } from "npm:zod@^3.25.76";
 var list_my_matches_default = defineTool4({
-  name: "list_my_matches",
-  title: "List my matches",
-  description: "List the signed-in traveler's FlyBye matches and their status.",
+  name: "list_conversations",
+  title: "List my conversations",
+  description: "List the signed-in professional's FlyBye conversations, most recently active first.",
   inputSchema: {
-    status: z3.enum(["pending", "accepted", "declined"]).optional().describe("Filter by match status."),
-    limit: z3.number().int().min(1).max(50).optional().describe("Maximum matches to return (default 20).")
+    limit: z3.number().int().min(1).max(50).optional().describe("Maximum conversations to return (default 20).")
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async ({ status, limit }, ctx) => {
+  handler: async ({ limit }, ctx) => {
     if (!ctx.isAuthenticated()) {
       return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
     }
     const supabase = supabaseForUser(ctx);
-    let query = supabase.from("matches").select("id, requester_id, target_id, status, airport, matched_at, created_at").order("created_at", { ascending: false }).limit(limit ?? 20);
-    if (status) query = query.eq("status", status);
-    const { data, error } = await query;
+    const { data, error } = await supabase.from("conversations").select("id, user_a_id, user_b_id, last_message_at, created_at").order("last_message_at", { ascending: false, nullsFirst: false }).limit(limit ?? 20);
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
     return {
       content: [{ type: "text", text: JSON.stringify(data ?? [], null, 2) }],
-      structuredContent: { matches: data ?? [] }
+      structuredContent: { conversations: data ?? [] }
     };
   }
 });
@@ -169,19 +166,19 @@ import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.26.2";
 import { z as z4 } from "npm:zod@^3.25.76";
 var list_messages_default = defineTool5({
   name: "list_messages",
-  title: "List messages in a match",
-  description: "Read the most recent chat messages in one of the signed-in traveler's matches.",
+  title: "List messages in a conversation",
+  description: "Read the most recent chat messages in one of the signed-in professional's conversations.",
   inputSchema: {
-    match_id: z4.string().uuid().describe("The match ID to read messages from."),
+    conversation_id: z4.string().uuid().describe("The conversation ID to read messages from."),
     limit: z4.number().int().min(1).max(100).optional().describe("Maximum messages to return (default 30).")
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async ({ match_id, limit }, ctx) => {
+  handler: async ({ conversation_id, limit }, ctx) => {
     if (!ctx.isAuthenticated()) {
       return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
     }
     const supabase = supabaseForUser(ctx);
-    const { data, error } = await supabase.from("messages").select("id, match_id, sender_id, content, created_at").eq("match_id", match_id).order("created_at", { ascending: false }).limit(limit ?? 30);
+    const { data, error } = await supabase.from("messages").select("id, conversation_id, sender_id, body, created_at").eq("conversation_id", conversation_id).order("created_at", { ascending: false }).limit(limit ?? 30);
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
     const messages = (data ?? []).slice().reverse();
     return {
@@ -197,18 +194,18 @@ import { z as z5 } from "npm:zod@^3.25.76";
 var send_message_default = defineTool6({
   name: "send_message",
   title: "Send a message",
-  description: "Send a text message as the signed-in traveler in one of their accepted FlyBye matches.",
+  description: "Send a text message as the signed-in professional in one of their FlyBye conversations.",
   inputSchema: {
-    match_id: z5.string().uuid().describe("The match ID to send the message in."),
-    content: z5.string().trim().min(1).max(2e3).describe("Message text to send.")
+    conversation_id: z5.string().uuid().describe("The conversation ID to send the message in."),
+    body: z5.string().trim().min(1).max(2e3).describe("Message text to send.")
   },
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
-  handler: async ({ match_id, content }, ctx) => {
+  handler: async ({ conversation_id, body }, ctx) => {
     if (!ctx.isAuthenticated()) {
       return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
     }
     const supabase = supabaseForUser(ctx);
-    const { data, error } = await supabase.from("messages").insert({ match_id, content, sender_id: ctx.getUserId() }).select().single();
+    const { data, error } = await supabase.from("messages").insert({ conversation_id, body, sender_id: ctx.getUserId() }).select().single();
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
     return {
       content: [{ type: "text", text: "Message sent." }],
@@ -218,12 +215,12 @@ var send_message_default = defineTool6({
 });
 
 // src/lib/mcp/index.ts
-var projectRef = "nqgpciewfajrcingdlgl";
+var projectRef = "pngjuliouszzhylkimsd";
 var mcp_default = defineMcp({
   name: "flybye",
   title: "FlyBye",
   version: "0.1.0",
-  instructions: "Tools for FlyBye, a connection app for travelers on layovers. Read and manage the signed-in traveler's profile, flights and layovers, matches, and match chat messages. All tools act as the authenticated user.",
+  instructions: "Tools for FlyBye, a business-networking app for professionals traveling through airports. Read and manage the signed-in professional's profile, flights and layovers, conversations, and chat messages. All tools act as the authenticated user.",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated"
