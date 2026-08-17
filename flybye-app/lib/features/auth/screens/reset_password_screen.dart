@@ -72,7 +72,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                   controller: _confirm,
                   obscureText: true,
                   decoration: const InputDecoration(
-                      labelText: 'Confirm new password'),
+                      labelText: 'Confirm new password',),
                   validator: (v) =>
                       v != _password.text ? 'Passwords don\'t match' : null,
                 ),

@@ -62,7 +62,7 @@ class _FlightEntryScreenState extends ConsumerState<FlightEntryScreen> {
     if (from.isEmpty || to.isEmpty || _departure == null || _arrival == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Fill in from, to, departure and arrival.')),
+            content: Text('Fill in from, to, departure and arrival.'),),
       );
       return;
     }
@@ -216,7 +216,7 @@ class _FlightEntryScreenState extends ConsumerState<FlightEntryScreen> {
                       height: 20,
                       width: 20,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2, color: Colors.white,),
                     )
                   : const Text('Save itinerary'),
             ),

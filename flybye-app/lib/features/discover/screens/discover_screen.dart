@@ -151,17 +151,17 @@ class _VerifyBanner extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
           onTap: () => context.push('/verification'),
-          child: Padding(
-            padding: const EdgeInsets.all(14),
+          child: const Padding(
+            padding: EdgeInsets.all(14),
             child: Row(
               children: [
-                const Icon(Icons.lock_outline,
-                    color: FlyByeColors.accent, size: 20),
-                const SizedBox(width: 12),
+                Icon(Icons.lock_outline,
+                    color: FlyByeColors.accent, size: 20,),
+                SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         'Browse mode — verify to message',
                         style: TextStyle(
@@ -173,12 +173,12 @@ class _VerifyBanner extends StatelessWidget {
                       Text(
                         'See who\'s at your terminal. Verify your ID to message.',
                         style: TextStyle(
-                            color: FlyByeColors.muted, fontSize: 12),
+                            color: FlyByeColors.muted, fontSize: 12,),
                       ),
                     ],
                   ),
                 ),
-                const Icon(Icons.chevron_right, color: FlyByeColors.accent),
+                Icon(Icons.chevron_right, color: FlyByeColors.accent),
               ],
             ),
           ),
@@ -199,7 +199,7 @@ class _NoItinerary extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.flight_takeoff,
-                size: 64, color: FlyByeColors.muted),
+                size: 64, color: FlyByeColors.muted,),
             const SizedBox(height: 16),
             const Text(
               'Add your itinerary to see professionals at your airport.',
@@ -230,7 +230,7 @@ class _Empty extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.location_on_outlined,
-                size: 64, color: FlyByeColors.muted),
+                size: 64, color: FlyByeColors.muted,),
             const SizedBox(height: 16),
             Text(
               'No professionals at $airport right now. New travelers arrive every hour.',

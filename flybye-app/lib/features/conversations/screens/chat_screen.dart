@@ -101,7 +101,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 child: ListTile(
                   leading: Icon(Icons.block, color: FlyByeColors.danger),
                   title: Text('Report and block',
-                      style: TextStyle(color: FlyByeColors.danger)),
+                      style: TextStyle(color: FlyByeColors.danger),),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
@@ -135,7 +135,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 return ListView.builder(
                   controller: _scroll,
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 16),
+                      horizontal: 12, vertical: 16,),
                   itemCount: msgs.length,
                   itemBuilder: (_, i) {
                     final m = msgs[i];
@@ -146,7 +146,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 4),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 10),
+                            horizontal: 14, vertical: 10,),
                         constraints: BoxConstraints(
                           maxWidth: MediaQuery.of(context).size.width * 0.78,
                         ),
@@ -187,7 +187,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                             decoration: const InputDecoration(
                               hintText: 'Type a message…',
                               contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 14, vertical: 12),
+                                  horizontal: 14, vertical: 12,),
                             ),
                           ),
                         ),

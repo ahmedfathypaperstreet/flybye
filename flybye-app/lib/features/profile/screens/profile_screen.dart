@@ -42,7 +42,7 @@ class ProfileScreen extends ConsumerWidget {
                       : null,
                   child: p.avatarUrl == null
                       ? const Icon(Icons.person,
-                          size: 48, color: FlyByeColors.muted)
+                          size: 48, color: FlyByeColors.muted,)
                       : null,
                 ),
               ),
@@ -55,13 +55,13 @@ class ProfileScreen extends ConsumerWidget {
                       child: Text(
                         p.displayName.isEmpty ? 'Your name' : p.displayName,
                         style: const TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.w700),
+                            fontSize: 22, fontWeight: FontWeight.w700,),
                       ),
                     ),
                     if (p.verified) ...[
                       const SizedBox(width: 6),
                       const Icon(Icons.verified,
-                          size: 20, color: FlyByeColors.primary),
+                          size: 20, color: FlyByeColors.primary,),
                     ],
                   ],
                 ),
@@ -92,18 +92,18 @@ class ProfileScreen extends ConsumerWidget {
 
               if (p.industry != null && p.industry!.isNotEmpty)
                 _InfoRow(
-                    icon: Icons.category_outlined, label: p.industry!),
+                    icon: Icons.category_outlined, label: p.industry!,),
               if (p.intent != null)
                 _InfoRow(
-                    icon: Icons.flag_outlined, label: p.intent!.label),
+                    icon: Icons.flag_outlined, label: p.intent!.label,),
               if (p.homeAirport != null && p.homeAirport!.isNotEmpty)
                 _InfoRow(
                     icon: Icons.home_outlined,
-                    label: 'Home airport · ${p.homeAirport}'),
+                    label: 'Home airport · ${p.homeAirport}',),
               if (p.currentAirport != null && p.currentAirport!.isNotEmpty)
                 _InfoRow(
                     icon: Icons.location_on_outlined,
-                    label: 'Currently at · ${p.currentAirport}'),
+                    label: 'Currently at · ${p.currentAirport}',),
               if (p.linkedinUrl != null && p.linkedinUrl!.isNotEmpty)
                 _InfoRow(
                   icon: Icons.link,
@@ -216,7 +216,7 @@ class _InfoRow extends StatelessWidget {
             ),
             if (onTap != null)
               const Icon(Icons.open_in_new,
-                  size: 15, color: FlyByeColors.muted),
+                  size: 15, color: FlyByeColors.muted,),
           ],
         ),
       ),

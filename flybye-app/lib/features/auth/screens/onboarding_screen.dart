@@ -139,18 +139,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             ),
             const SizedBox(height: 16),
             _field(_linkedin, 'LinkedIn URL (optional)',
-                hint: 'https://linkedin.com/in/you'),
+                hint: 'https://linkedin.com/in/you',),
             _field(_bio, 'About you',
                 hint: 'A line or two — what are you working on?',
                 maxLines: 3,
-                maxLength: 400),
+                maxLength: 400,),
             const SizedBox(height: 8),
             const Divider(),
             const SizedBox(height: 8),
             const Text(
               'Verify your ID',
               style: TextStyle(
-                  fontWeight: FontWeight.w700, color: FlyByeColors.foreground),
+                  fontWeight: FontWeight.w700, color: FlyByeColors.foreground,),
             ),
             const SizedBox(height: 4),
             const Text(
@@ -176,7 +176,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       height: 20,
                       width: 20,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2, color: Colors.white,),
                     )
                   : const Text('Finish & add my flight'),
             ),
@@ -243,7 +243,7 @@ class _ImageTile extends StatelessWidget {
                       child: Icon(icon, color: FlyByeColors.muted),
                     )
                   : Image.file(File(file!.path),
-                      width: 64, height: 64, fit: BoxFit.cover),
+                      width: 64, height: 64, fit: BoxFit.cover,),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -254,13 +254,13 @@ class _ImageTile extends StatelessWidget {
                     label,
                     style: const TextStyle(
                         fontWeight: FontWeight.w600,
-                        color: FlyByeColors.foreground),
+                        color: FlyByeColors.foreground,),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     file == null ? helper : 'Tap to change',
                     style: const TextStyle(
-                        color: FlyByeColors.muted, fontSize: 12),
+                        color: FlyByeColors.muted, fontSize: 12,),
                   ),
                 ],
               ),

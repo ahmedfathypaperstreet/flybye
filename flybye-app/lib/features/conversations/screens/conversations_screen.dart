@@ -40,7 +40,7 @@ class ConversationsScreen extends ConsumerWidget {
                     backgroundColor: FlyByeColors.secondary,
                     backgroundImage: c.otherAvatar != null
                         ? CachedNetworkImageProvider(
-                            repo.avatarUrl(c.otherAvatar!))
+                            repo.avatarUrl(c.otherAvatar!),)
                         : null,
                     child: c.otherAvatar == null
                         ? const Icon(Icons.person, color: FlyByeColors.muted)
@@ -58,7 +58,7 @@ class ConversationsScreen extends ConsumerWidget {
                       if (c.verified) ...[
                         const SizedBox(width: 4),
                         const Icon(Icons.verified,
-                            size: 15, color: FlyByeColors.primary),
+                            size: 15, color: FlyByeColors.primary,),
                       ],
                     ],
                   ),
@@ -71,7 +71,7 @@ class ConversationsScreen extends ConsumerWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                              color: FlyByeColors.muted, fontSize: 12),
+                              color: FlyByeColors.muted, fontSize: 12,),
                         ),
                       Text(
                         c.lastMessage ?? 'Start the conversation',
@@ -90,7 +90,7 @@ class ConversationsScreen extends ConsumerWidget {
                       : Text(
                           DateFormat.jm().format(c.lastMessageAt!.toLocal()),
                           style: const TextStyle(
-                              color: FlyByeColors.muted, fontSize: 12),
+                              color: FlyByeColors.muted, fontSize: 12,),
                         ),
                   onTap: () => context.push('/chat/${c.conversationId}'),
                 );
@@ -113,14 +113,14 @@ class _Empty extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.chat_bubble_outline,
-                size: 56, color: FlyByeColors.muted),
+                size: 56, color: FlyByeColors.muted,),
             const SizedBox(height: 16),
             const Text(
               'No conversations yet',
               style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
-                  color: FlyByeColors.foreground),
+                  color: FlyByeColors.foreground,),
             ),
             const SizedBox(height: 6),
             const Text(

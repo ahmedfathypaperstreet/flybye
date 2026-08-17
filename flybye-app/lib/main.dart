@@ -22,7 +22,8 @@ Future<void> main() async {
     try {
       await Supabase.initialize(
         url: Env.supabaseUrl,
-        anonKey: Env.supabaseAnonKey,
+        // We use the new sb_publishable_ key format (shared project).
+        publishableKey: Env.supabaseAnonKey,
         authOptions: const FlutterAuthClientOptions(
           authFlowType: AuthFlowType.pkce,
         ),
@@ -65,7 +66,7 @@ class _BootErrorApp extends StatelessWidget {
                   const SizedBox(height: 12),
                   Text(message,
                       style: const TextStyle(
-                          color: Colors.white, fontSize: 14, height: 1.4)),
+                          color: Colors.white, fontSize: 14, height: 1.4,),),
                 ],
               ),
             ),

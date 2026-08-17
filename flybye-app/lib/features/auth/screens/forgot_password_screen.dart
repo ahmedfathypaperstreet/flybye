@@ -52,9 +52,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     );
   }
 
-  Widget _sentView() => Column(
+  Widget _sentView() => const Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: const [
+        children: [
           SizedBox(height: 32),
           Icon(Icons.mark_email_read_outlined, size: 64),
           SizedBox(height: 16),

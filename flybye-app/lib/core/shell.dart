@@ -9,7 +9,7 @@ class AppShell extends StatelessWidget {
   static const _tabs = <_Tab>[
     _Tab('/discover', Icons.explore_outlined, Icons.explore, 'Discover'),
     _Tab('/conversations', Icons.chat_bubble_outline, Icons.chat_bubble,
-        'Connections'),
+        'Connections',),
     _Tab('/profile', Icons.person_outline, Icons.person, 'You'),
   ];
 

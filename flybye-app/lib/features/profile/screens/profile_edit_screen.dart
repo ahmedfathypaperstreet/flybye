@@ -161,7 +161,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                               : null) as ImageProvider<Object>?,
                       child: _newAvatar == null && _existingAvatarUrl == null
                           ? const Icon(Icons.camera_alt_outlined,
-                              size: 32, color: FlyByeColors.muted)
+                              size: 32, color: FlyByeColors.muted,)
                           : null,
                     ),
                     Container(
@@ -171,7 +171,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(Icons.edit,
-                          size: 16, color: Colors.white),
+                          size: 16, color: Colors.white,),
                     ),
                   ],
                 ),
@@ -194,11 +194,11 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
             ),
             const SizedBox(height: 16),
             _field(_linkedin, 'LinkedIn URL',
-                hint: 'https://linkedin.com/in/you'),
+                hint: 'https://linkedin.com/in/you',),
             _field(_bio, 'Bio',
                 hint: 'Tell other professionals about yourself…',
                 maxLines: 3,
-                maxLength: 400),
+                maxLength: 400,),
             _field(_homeAirport, 'Home airport', hint: 'e.g. LAX, JFK, LHR'),
             const SizedBox(height: 24),
             FilledButton(
@@ -208,7 +208,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                       height: 20,
                       width: 20,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2, color: Colors.white,),
                     )
                   : const Text('Save profile'),
             ),

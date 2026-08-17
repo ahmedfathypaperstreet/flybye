@@ -39,7 +39,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-                'Submitted for review. We\'ll notify you once your ID is reviewed (usually within 24h).'),
+                'Submitted for review. We\'ll notify you once your ID is reviewed (usually within 24h).',),
           ),
         );
       }
@@ -80,7 +80,7 @@ class _VerificationScreenState extends ConsumerState<VerificationScreen> {
               const Row(
                 children: [
                   Icon(Icons.shield_outlined,
-                      size: 16, color: FlyByeColors.muted),
+                      size: 16, color: FlyByeColors.muted,),
                   SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -168,7 +168,7 @@ class _StatusCard extends StatelessWidget {
                 Text(
                   desc,
                   style: const TextStyle(
-                      color: FlyByeColors.muted, fontSize: 13, height: 1.4),
+                      color: FlyByeColors.muted, fontSize: 13, height: 1.4,),
                 ),
               ],
             ),
@@ -227,13 +227,13 @@ class _UploadCard extends StatelessWidget {
           const Text(
             'Upload your ID',
             style: TextStyle(
-                fontWeight: FontWeight.w700, color: FlyByeColors.foreground),
+                fontWeight: FontWeight.w700, color: FlyByeColors.foreground,),
           ),
           const SizedBox(height: 6),
           const Text(
             'Upload a clear photo of your government-issued ID (driver\'s license or passport). Once approved, you\'ll be able to message professionals.',
             style: TextStyle(
-                color: FlyByeColors.muted, fontSize: 13, height: 1.4),
+                color: FlyByeColors.muted, fontSize: 13, height: 1.4,),
           ),
           const SizedBox(height: 16),
           FilledButton.icon(
@@ -243,7 +243,7 @@ class _UploadCard extends StatelessWidget {
                     height: 18,
                     width: 18,
                     child: CircularProgressIndicator(
-                        strokeWidth: 2, color: Colors.white),
+                        strokeWidth: 2, color: Colors.white,),
                   )
                 : const Icon(Icons.upload_outlined),
             label: Text(busy ? 'Uploading…' : 'Choose a photo'),

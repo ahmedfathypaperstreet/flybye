@@ -72,7 +72,7 @@ class ConnectionCard extends StatelessWidget {
                           if (profile.verified) ...[
                             const SizedBox(width: 6),
                             const Icon(Icons.verified,
-                                size: 18, color: FlyByeColors.primary),
+                                size: 18, color: FlyByeColors.primary,),
                           ],
                         ],
                       ),
@@ -103,7 +103,7 @@ class ConnectionCard extends StatelessWidget {
                     profile.industry!.isNotEmpty) ...[
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 3),
+                        horizontal: 8, vertical: 3,),
                     decoration: BoxDecoration(
                       color: FlyByeColors.secondary,
                       borderRadius: BorderRadius.circular(6),
@@ -123,7 +123,7 @@ class ConnectionCard extends StatelessWidget {
                   Row(
                     children: [
                       Icon(_intentIcon(profile.intent!),
-                          size: 15, color: FlyByeColors.accent),
+                          size: 15, color: FlyByeColors.accent,),
                       const SizedBox(width: 6),
                       Text(
                         profile.intent!.label,
@@ -141,7 +141,7 @@ class ConnectionCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                        fontSize: 13, color: FlyByeColors.foreground),
+                        fontSize: 13, color: FlyByeColors.foreground,),
                   ),
                 ],
                 const SizedBox(height: 14),
@@ -196,7 +196,7 @@ class _OverflowMenu extends StatelessWidget {
           child: ListTile(
             leading: Icon(Icons.block, color: FlyByeColors.danger),
             title: Text('Report and block',
-                style: TextStyle(color: FlyByeColors.danger)),
+                style: TextStyle(color: FlyByeColors.danger),),
             contentPadding: EdgeInsets.zero,
           ),
         ),

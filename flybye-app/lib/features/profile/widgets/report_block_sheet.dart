@@ -60,7 +60,7 @@ class _ReportBlockSheetState extends ConsumerState<ReportBlockSheet> {
           SnackBar(
             content: Text(block
                 ? 'Reported and blocked. Thanks for keeping FlyBye safe.'
-                : 'Reported. Thanks for keeping FlyBye safe.'),
+                : 'Reported. Thanks for keeping FlyBye safe.',),
           ),
         );
       }

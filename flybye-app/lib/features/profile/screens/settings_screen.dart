@@ -90,7 +90,7 @@ class SettingsScreen extends ConsumerWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-              'Email support@flybye.app to delete your account. We\'ll automate this in v1.1.'),
+              'Email support@flybye.app to delete your account. We\'ll automate this in v1.1.',),
         ),
       );
     }
