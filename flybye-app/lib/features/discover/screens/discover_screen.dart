@@ -6,9 +6,17 @@ import '../../../core/theme.dart';
 import '../../profile/data/profile_repo.dart';
 import '../data/discover_repo.dart';
 import '../widgets/connection_card.dart';
+import '../widgets/terminal_map.dart';
 
-class DiscoverScreen extends ConsumerWidget {
+class DiscoverScreen extends ConsumerStatefulWidget {
   const DiscoverScreen({super.key});
+
+  @override
+  ConsumerState<DiscoverScreen> createState() => _DiscoverScreenState();
+}
+
+class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
+  bool _showMap = false;
 
   Future<void> _message(
     BuildContext context,
@@ -46,7 +54,7 @@ class DiscoverScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final myProfile = ref.watch(myProfileProvider);
 
     return Scaffold(
@@ -64,6 +72,31 @@ class DiscoverScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('$e')),
         data: (me) {
+          final toggle = _ViewToggle(
+            showMap: _showMap,
+            onChanged: (v) => setState(() => _showMap = v),
+          );
+
+          if (_showMap) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                ref.invalidate(myProfileProvider);
+              },
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+                children: [
+                  if (!me.verified) ...[
+                    _VerifyBanner(),
+                    const SizedBox(height: 12),
+                  ],
+                  toggle,
+                  const SizedBox(height: 16),
+                  TerminalMap(iata: me.currentAirport),
+                ],
+              ),
+            );
+          }
+
           final feed = ref.watch(discoverFeedProvider);
           return RefreshIndicator(
             onRefresh: () async {
@@ -84,6 +117,10 @@ class DiscoverScreen extends ConsumerWidget {
                   slivers: [
                     if (!me.verified)
                       SliverToBoxAdapter(child: _VerifyBanner()),
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                      sliver: SliverToBoxAdapter(child: toggle),
+                    ),
                     if (me.currentAirport == null)
                       const SliverFillRemaining(
                         hasScrollBody: false,
@@ -135,6 +172,41 @@ class DiscoverScreen extends ConsumerWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _ViewToggle extends StatelessWidget {
+  const _ViewToggle({required this.showMap, required this.onChanged});
+  final bool showMap;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return SegmentedButton<bool>(
+      segments: const [
+        ButtonSegment(
+          value: false,
+          label: Text('People'),
+          icon: Icon(Icons.people_alt_outlined),
+        ),
+        ButtonSegment(
+          value: true,
+          label: Text('Map'),
+          icon: Icon(Icons.map_outlined),
+        ),
+      ],
+      selected: {showMap},
+      onSelectionChanged: (s) => onChanged(s.first),
+      showSelectedIcon: false,
+      style: ButtonStyle(
+        visualDensity: VisualDensity.compact,
+        backgroundColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? FlyByeColors.primary.withValues(alpha: 0.20)
+              : FlyByeColors.card,
+        ),
       ),
     );
   }

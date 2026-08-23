@@ -77,19 +77,32 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
-    // 1. Look up airport coords + bbox
-    const { data: airport, error: airportErr } = await supabase
+    // 1. Look up airport coords (unified schema: `iata_code`, no bbox columns)
+    const { data: airportRow, error: airportErr } = await supabase
       .from("airports")
-      .select("iata, latitude, longitude, bbox_min_lat, bbox_max_lat, bbox_min_lon, bbox_max_lon, name, city")
-      .eq("iata", iata)
+      .select("iata_code, latitude, longitude, name, city")
+      .eq("iata_code", iata)
       .maybeSingle();
 
-    if (airportErr || !airport) {
+    if (airportErr || !airportRow) {
       return new Response(JSON.stringify({ error: "Airport not found" }), {
         status: 404,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    // Normalize to the shape clients expect (iata + null bbox → ±0.02° fallback).
+    const airport = {
+      iata: airportRow.iata_code,
+      latitude: airportRow.latitude,
+      longitude: airportRow.longitude,
+      bbox_min_lat: null as number | null,
+      bbox_max_lat: null as number | null,
+      bbox_min_lon: null as number | null,
+      bbox_max_lon: null as number | null,
+      name: airportRow.name,
+      city: airportRow.city,
+    };
 
     // 2. Try cache first
     const { data: cached } = await supabase

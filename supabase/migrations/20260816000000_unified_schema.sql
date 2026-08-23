@@ -9,24 +9,6 @@
 -- flybye://reset-password (mobile) + your web origin under Auth -> URL Config.
 -- ============================================================================
 
--- 0. RESET  ⚠️ DESTRUCTIVE ----------------------------------------------------
--- Drops the pre-existing (Lovable/pre-pivot) tables so the unified schema can be
--- created clean. SAFE on this fresh project (no real users/data). If you ever run
--- this against a project WITH data you care about, remove this section first.
-drop table if exists
-  public.messages, public.conversations, public.matches, public.swipes,
-  public.location_shares, public.reports, public.blocks,
-  public.verification_requests, public.attestations, public.subscriptions,
-  public.flights, public.airport_pois_cache, public.airports,
-  public.email_send_log, public.email_send_state, public.email_unsubscribe_tokens,
-  public.suppressed_emails, public.profiles
-  cascade;
-
-drop type if exists
-  public.networking_intent, public.verification_status, public.report_status,
-  public.match_status, public.swipe_direction, public.subscription_tier
-  cascade;
-
 -- 1. Extensions --------------------------------------------------------------
 create extension if not exists "uuid-ossp";
 create extension if not exists "pg_trgm";

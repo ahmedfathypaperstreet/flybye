@@ -1,0 +1,7 @@
+project_id = "pngjuliouszzhylkimsd"
+
+[functions.airport-pois]
+verify_jwt = true
+
+[functions.flight-lookup]
+verify_jwt = true

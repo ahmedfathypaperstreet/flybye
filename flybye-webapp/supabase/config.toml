@@ -1,4 +1,5 @@
-project_id = "nqgpciewfajrcingdlgl"
+project_id = "pngjuliouszzhylkimsd"
 
-[functions.process-email-queue]
-verify_jwt = true
+# NOTE: The shared backend (schema + hand-written edge functions) now lives in the
+# repo-root `supabase/` folder — deploy from there. This folder only keeps the
+# Lovable-auto-generated `mcp` function, which the Vite plugin regenerates on build.

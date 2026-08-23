@@ -7,6 +7,7 @@ import '../../../core/theme.dart';
 import '../../profile/data/profile_repo.dart';
 import '../../profile/widgets/report_block_sheet.dart';
 import '../data/conversation_repo.dart';
+import '../widgets/location_share_card.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen({super.key, required this.conversationId});
@@ -111,6 +112,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       ),
       body: Column(
         children: [
+          if (_otherId != null)
+            LocationShareCard(
+              otherUserId: _otherId!,
+              defaultAirport: myProfile.asData?.value.currentAirport,
+            ),
           Expanded(
             child: StreamBuilder<List<Map<String, dynamic>>>(
               stream: repo.messagesStream(widget.conversationId),
