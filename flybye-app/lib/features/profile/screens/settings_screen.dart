@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/supabase_providers.dart';
 import '../../auth/services/auth_service.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -68,7 +69,7 @@ class SettingsScreen extends ConsumerWidget {
       builder: (_) => AlertDialog(
         title: const Text('Delete account?'),
         content: const Text(
-            'This permanently deletes your profile, matches, and messages. '
+            'This permanently deletes your profile, connections, and messages. '
             'This cannot be undone.'),
         actions: [
           TextButton(
@@ -83,15 +84,20 @@ class SettingsScreen extends ConsumerWidget {
         ],
       ),
     );
-    if (ok != true) return;
-    // Account deletion is a privileged operation; we expose a Supabase RPC
-    // `delete_self` (out of scope for v1) or handle via a support flow.
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-              'Email support@flybye.app to delete your account. We\'ll automate this in v1.1.',),
-        ),
+    if (ok != true || !context.mounted) return;
+    final messenger = ScaffoldMessenger.of(context);
+    final router = GoRouter.of(context);
+    final client = ref.read(supabaseClientProvider);
+    try {
+      await client.rpc('delete_account');
+      await client.auth.signOut();
+      messenger.showSnackBar(
+        const SnackBar(content: Text('Your account has been deleted.')),
+      );
+      router.go('/');
+    } catch (e) {
+      messenger.showSnackBar(
+        SnackBar(content: Text('Could not delete account: $e')),
       );
     }
   }
@@ -107,7 +113,7 @@ class _SectionHeader extends StatelessWidget {
       child: Text(
         label.toUpperCase(),
         style: const TextStyle(
-          color: Colors.black54,
+          color: Colors.white70,
           fontSize: 12,
           letterSpacing: 0.5,
           fontWeight: FontWeight.w600,

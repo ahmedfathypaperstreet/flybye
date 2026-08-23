@@ -357,6 +357,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      delete_account: {
+        Args: never
+        Returns: undefined
+      }
       discover_at_airport: {
         Args: never
         Returns: {

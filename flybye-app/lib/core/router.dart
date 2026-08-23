@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../features/auth/screens/landing_screen.dart';
 import '../features/auth/screens/sign_in_screen.dart';
@@ -20,16 +23,36 @@ import 'shell.dart';
 import 'supabase_providers.dart';
 
 /// Notifies go_router whenever the auth state changes so redirects re-run.
+/// Also tracks the password-recovery deep link: when the user taps the reset
+/// email, Supabase opens a recovery session and fires `passwordRecovery`; we
+/// flag it so the redirect sends them to /reset-password instead of /discover.
 class _AuthListenable extends ChangeNotifier {
   _AuthListenable(Ref ref) {
     _sub = ref
         .read(supabaseClientProvider)
         .auth
         .onAuthStateChange
-        .listen((_) => notifyListeners());
+        .listen((s) {
+      switch (s.event) {
+        case AuthChangeEvent.passwordRecovery:
+          recovering = true;
+          break;
+        case AuthChangeEvent.userUpdated:
+        case AuthChangeEvent.signedOut:
+          recovering = false;
+          break;
+        default:
+          break;
+      }
+      notifyListeners();
+    });
     ref.onDispose(() => _sub.cancel());
   }
-  late final dynamic _sub;
+
+  /// True while a password-recovery session is active (until the password is
+  /// updated or the user signs out).
+  bool recovering = false;
+  late final StreamSubscription<AuthState> _sub;
 }
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -39,6 +62,14 @@ final routerProvider = Provider<GoRouter>((ref) {
     initialLocation: '/',
     refreshListenable: auth,
     redirect: (context, state) {
+      // Password-recovery deep link: force the reset screen regardless of the
+      // (recovery) session being "logged in".
+      if (auth.recovering) {
+        return state.matchedLocation == '/reset-password'
+            ? null
+            : '/reset-password';
+      }
+
       final user = ref.read(supabaseClientProvider).auth.currentUser;
       final loggedIn = user != null;
       final goingToAuth = const {

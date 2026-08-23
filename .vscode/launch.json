@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "🌐 Web (Vite + Chrome)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}/flybye-webapp/src",
+      "preLaunchTask": "web: dev server",
+      "presentation": { "group": "1-run", "order": 1 }
+    },
+    {
+      "name": "📱 Mobile (Flutter)",
+      "type": "dart",
+      "request": "launch",
+      "program": "flybye-app/lib/main.dart",
+      "cwd": "flybye-app",
+      "flutterMode": "debug",
+      "presentation": { "group": "1-run", "order": 2 }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "▶ Web + Mobile (both)",
+      "configurations": ["🌐 Web (Vite + Chrome)", "📱 Mobile (Flutter)"],
+      "stopAll": true,
+      "presentation": { "group": "0-run", "order": 1 }
+    }
+  ]
+}

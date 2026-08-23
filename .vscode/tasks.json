@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "web: dev server",
+      "detail": "Start the Vite dev server for flybye-webapp on http://localhost:8080",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": { "cwd": "${workspaceFolder}/flybye-webapp" },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": { "regexp": "." },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "VITE",
+          "endsPattern": "Local:"
+        }
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "run" }
+    },
+    {
+      "label": "web: install deps",
+      "type": "shell",
+      "command": "npm install",
+      "options": { "cwd": "${workspaceFolder}/flybye-webapp" },
+      "problemMatcher": []
+    },
+    {
+      "label": "web: build",
+      "type": "shell",
+      "command": "npm run build",
+      "options": { "cwd": "${workspaceFolder}/flybye-webapp" },
+      "problemMatcher": []
+    },
+    {
+      "label": "mobile: pub get",
+      "type": "shell",
+      "command": "flutter pub get",
+      "options": { "cwd": "${workspaceFolder}/flybye-app" },
+      "problemMatcher": []
+    },
+    {
+      "label": "mobile: analyze",
+      "type": "shell",
+      "command": "flutter analyze",
+      "options": { "cwd": "${workspaceFolder}/flybye-app" },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Camera, MapPin, Save, Loader2, Linkedin, Building2, Briefcase } from "lucide-react";
+import { Camera, MapPin, Save, Loader2, Linkedin, Building2, Briefcase, Trash2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
@@ -18,6 +18,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import VerificationStatusCard from "@/components/VerificationStatusCard";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import type { Database } from "@/integrations/supabase/types";
 
 type NetworkingIntent = Database["public"]["Enums"]["networking_intent"];
@@ -32,10 +43,11 @@ const INTENT_OPTIONS: { value: NetworkingIntent; label: string }[] = [
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024; // 5 MB
 
 const Profile = () => {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const [displayName, setDisplayName] = useState("");
   const [role, setRole] = useState("");
@@ -155,6 +167,23 @@ const Profile = () => {
     } else {
       toast({ title: "Profile updated ✈️", description: "Your changes have been saved." });
     }
+  };
+
+  const handleDeleteAccount = async () => {
+    setDeleting(true);
+    const { error } = await supabase.rpc("delete_account");
+    if (error) {
+      setDeleting(false);
+      toast({
+        title: "Couldn't delete account",
+        description: error.message,
+        variant: "destructive",
+      });
+      return;
+    }
+    await signOut();
+    toast({ title: "Your account has been deleted." });
+    navigate("/");
   };
 
   if (authLoading || loadingProfile) {
@@ -379,6 +408,41 @@ const Profile = () => {
               </>
             )}
           </Button>
+
+          {/* Danger zone — account deletion */}
+          <div className="glass-card p-6 border-destructive/30">
+            <h2 className="text-sm font-display font-bold text-destructive">Delete account</h2>
+            <p className="text-xs text-muted-foreground mt-1 mb-4">
+              Permanently deletes your profile, connections, and messages. This cannot be undone.
+            </p>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline" className="w-full border-destructive/50 text-destructive hover:bg-destructive/10">
+                  <Trash2 className="w-4 h-4" />
+                  Delete my account
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete your account?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This permanently deletes your profile, connections, and messages.
+                    This action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleDeleteAccount}
+                    disabled={deleting}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    {deleting ? "Deleting…" : "Delete account"}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </motion.div>
       </div>
     </div>

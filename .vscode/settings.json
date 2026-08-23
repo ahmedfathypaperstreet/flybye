@@ -1,0 +1,12 @@
+{
+  // Machine-specific: point the Dart/Flutter extension at your Flutter SDK.
+  // The extension usually auto-detects it from PATH; set this only if it can't.
+  // Change this line on other machines (Amar's, CI) or delete it to auto-detect.
+  "dart.flutterSdkPath": "/Users/ahmedfathy/development/flutter",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/build": true,
+    "**/dist": true,
+    "**/.dart_tool": true
+  }
+}
