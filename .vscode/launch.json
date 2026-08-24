@@ -14,8 +14,8 @@
       "name": "📱 Mobile (Flutter)",
       "type": "dart",
       "request": "launch",
-      "program": "flybye-app/lib/main.dart",
-      "cwd": "flybye-app",
+      "program": "lib/main.dart",
+      "cwd": "${workspaceFolder}/flybye-app",
       "flutterMode": "debug",
       "presentation": { "group": "1-run", "order": 2 }
     }
