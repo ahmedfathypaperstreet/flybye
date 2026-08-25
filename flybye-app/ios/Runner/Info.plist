@@ -40,13 +40,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>FlyBye needs your camera to take a verification selfie when you sign up.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>FlyBye does not record audio. Reserved for future voice messages.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>FlyBye saves photos you share in chat.</string>
+	<string>FlyBye uses your camera to take your profile photo and capture your ID for verification.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>FlyBye uses your photos so you can pick a profile picture.</string>
+	<string>FlyBye uses your photo library so you can choose a profile photo and upload your ID for verification.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
