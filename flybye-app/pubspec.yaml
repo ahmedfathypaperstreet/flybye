@@ -1,7 +1,7 @@
 name: flybye
 description: FlyBye — meet verified travelers at your airport.
 publish_to: "none"
-version: 0.2.0+2
+version: 0.2.1+3
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
