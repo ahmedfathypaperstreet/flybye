@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../core/photo_picker.dart';
 import '../../../core/theme.dart';
 import '../data/profile_repo.dart';
 
@@ -69,9 +70,9 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
   }
 
   Future<void> _pickAvatar() async {
-    final f = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 85,
+    final f = await pickPhoto(
+      context,
+      camera: CameraDevice.front,
       maxWidth: 1200,
     );
     if (f != null) setState(() => _newAvatar = f);

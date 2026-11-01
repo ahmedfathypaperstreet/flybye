@@ -44,7 +44,7 @@ flutter create --platforms=ios,android --org app.flybye --project-name flybye .
 #    See android/app/src/main/AndroidManifest.snippet.xml
 
 # 4. Push the Supabase backend
-supabase link --project-ref rxipszdcbvrevuyqpncq
+supabase link --project-ref pngjuliouszzhylkimsd
 supabase db push
 psql "$SUPABASE_DB_URL" -f supabase/seed/airports_seed.sql
 supabase functions deploy revenuecat-webhook

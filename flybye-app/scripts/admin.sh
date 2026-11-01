@@ -41,7 +41,7 @@ case "$cmd" in
   preview)
     [ $# -ge 1 ] || { echo "usage: preview <user_uuid>" >&2; exit 1; }
     if [ -z "${SUPABASE_PROJECT_REF:-}" ]; then
-      echo "Set SUPABASE_PROJECT_REF (e.g. rxipszdcbvrevuyqpncq) to use preview." >&2
+      echo "Set SUPABASE_PROJECT_REF (e.g. pngjuliouszzhylkimsd) to use preview." >&2
       exit 1
     fi
     if ! command -v supabase >/dev/null; then

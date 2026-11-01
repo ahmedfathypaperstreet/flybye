@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Supabase CLI pinned to FlyBye's project and account.
+#
+# The global `supabase login` may belong to another account. This wrapper
+# loads FlyBye's access token + project ref from supabase/.deploy.env
+# (gitignored; copy supabase/.deploy.env.example) and passes them to the CLI,
+# so it always deploys to the right project regardless of who's logged in.
+#
+#   ./sb functions deploy flight-lookup
+#   ./sb secrets set AVIATIONSTACK_KEY=...
+#   ./sb secrets list
+#   ./sb projects list          # sanity check: shows the FlyBye account's projects
+set -euo pipefail
+
+root="$(cd "$(dirname "$0")" && pwd)"
+env_file="$root/supabase/.deploy.env"
+
+if [ ! -f "$env_file" ]; then
+  echo "Missing $env_file — copy supabase/.deploy.env.example and fill it in." >&2
+  exit 1
+fi
+set -a
+# shellcheck source=/dev/null
+source "$env_file"
+set +a
+
+: "${SUPABASE_ACCESS_TOKEN:?Set SUPABASE_ACCESS_TOKEN in supabase/.deploy.env}"
+: "${SUPABASE_PROJECT_REF:?Set SUPABASE_PROJECT_REF in supabase/.deploy.env}"
+
+cd "$root"
+
+# Commands that take --project-ref get it explicitly; everything else runs as-is
+# (still under FlyBye's token).
+case "${1:-} ${2:-}" in
+  "functions deploy"* | "functions list"* | "functions delete"* | "functions download"* | \
+  "secrets set"* | "secrets list"* | "secrets unset"*)
+    exec supabase "$@" --project-ref "$SUPABASE_PROJECT_REF"
+    ;;
+  *)
+    exec supabase "$@"
+    ;;
+esac

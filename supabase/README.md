@@ -23,11 +23,15 @@ supabase/
 - Then: **Auth → URL Configuration → Redirect URLs** add `flybye://reset-password` + your web origin.
 
 ## Deploy edge functions (run from THIS repo root)
+Use `./sb` instead of `supabase` — it pins the CLI to the FlyBye project and
+the account that owns it, whatever account `supabase login` is on.
+One-time: `cp supabase/.deploy.env.example supabase/.deploy.env` and paste an
+access token from the owning account (supabase.com → Account → Access Tokens).
 ```
-supabase link --project-ref pngjuliouszzhylkimsd   # once
-supabase functions deploy airport-pois
-supabase functions deploy flight-lookup            # optional; set the secret first:
-# supabase secrets set AVIATIONSTACK_KEY=<key>
+./sb projects list                                 # sanity check: FlyBye's account
+./sb secrets set AVIATIONSTACK_KEY=<key>           # for flight-lookup
+./sb functions deploy airport-pois
+./sb functions deploy flight-lookup
 ```
 `airport-pois` needs no secrets — Supabase injects `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY`.
 

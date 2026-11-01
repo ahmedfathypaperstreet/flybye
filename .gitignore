@@ -1,3 +1,9 @@
 
 # Supabase CLI local state
 **/supabase/.temp/
+
+# Supabase CLI credentials for ./sb
+supabase/.deploy.env
+
+# Operator script dependencies
+flybye-app/scripts/node_modules/

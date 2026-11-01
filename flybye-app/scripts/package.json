@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "seed": "ts-node seed_demo_users.ts"
+    "seed": "ts-node seed_demo_users.ts",
+    "warm-pois": "ts-node warm_pois.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0"

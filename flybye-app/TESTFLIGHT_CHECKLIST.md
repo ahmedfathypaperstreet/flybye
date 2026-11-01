@@ -72,7 +72,7 @@ If `flutter create` complains about an existing project, delete `flybye.iml` and
 cd "/Users/paperii/Documents/Claude/Projects/FlyBye App"
 brew install supabase/tap/supabase
 supabase login
-supabase link --project-ref rxipszdcbvrevuyqpncq
+supabase link --project-ref pngjuliouszzhylkimsd
 supabase db push
 psql "$SUPABASE_DB_URL" -f supabase/seed/airports_seed.sql
 supabase functions deploy revenuecat-webhook
@@ -93,7 +93,7 @@ In the Supabase dashboard:
 2. **Entitlements**: create `regular` and `first_class`.
 3. **Products**: create the App Store products in App Store Connect first (`flybye_regular_monthly`, `flybye_first_class_monthly`, `flybye_regular_annual`, `flybye_first_class_annual`), then add them to RevenueCat and attach to the right entitlement.
 4. **Offerings**: create a `default` offering with all four packages.
-5. **Integrations → Webhooks**: URL = `https://rxipszdcbvrevuyqpncq.functions.supabase.co/revenuecat-webhook`, Authorization header = `Bearer <RC_WEBHOOK_SECRET>` from step 4.
+5. **Integrations → Webhooks**: URL = `https://pngjuliouszzhylkimsd.functions.supabase.co/revenuecat-webhook`, Authorization header = `Bearer <RC_WEBHOOK_SECRET>` from step 4.
 6. Copy the **iOS public app-specific API key** (starts with `appl_`) into `.env` as `REVENUECAT_IOS_KEY`.
 
 ---

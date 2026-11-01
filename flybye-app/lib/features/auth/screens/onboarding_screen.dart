@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../core/photo_picker.dart';
 import '../../../core/theme.dart';
 import '../../profile/data/profile_repo.dart';
 import '../../verification/data/verification_repo.dart';
@@ -40,11 +41,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     super.dispose();
   }
 
-  Future<XFile?> _pick(ImageSource source) => ImagePicker().pickImage(
-        source: source,
-        imageQuality: 85,
-        maxWidth: 1600,
-      );
 
   Future<void> _finish() async {
     if (_headshot == null) {
@@ -119,7 +115,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               file: _headshot,
               icon: Icons.add_a_photo_outlined,
               onPick: () async {
-                final f = await _pick(ImageSource.gallery);
+                final f = await pickPhoto(context, camera: CameraDevice.front);
                 if (f != null) setState(() => _headshot = f);
               },
             ),
@@ -164,7 +160,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               file: _idDoc,
               icon: Icons.badge_outlined,
               onPick: () async {
-                final f = await _pick(ImageSource.gallery);
+                final f = await pickPhoto(context);
                 if (f != null) setState(() => _idDoc = f);
               },
             ),

@@ -248,10 +248,23 @@ class _TerminalMapState extends ConsumerState<TerminalMap> {
         ),
         if (pois.isEmpty && !_loading) ...[
           const SizedBox(height: 8),
-          const Text(
-            'No places found for this airport yet.',
-            style: TextStyle(color: FlyByeColors.muted, fontSize: 12),
-          ),
+          if (_payload?.unavailable ?? false)
+            Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    'Couldn\'t load places right now.',
+                    style: TextStyle(color: FlyByeColors.muted, fontSize: 12),
+                  ),
+                ),
+                TextButton(onPressed: _fetch, child: const Text('Retry')),
+              ],
+            )
+          else
+            const Text(
+              'No places found for this airport yet.',
+              style: TextStyle(color: FlyByeColors.muted, fontSize: 12),
+            ),
         ],
       ],
     );

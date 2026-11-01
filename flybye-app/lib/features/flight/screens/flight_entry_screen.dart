@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -28,14 +30,73 @@ class _FlightEntryScreenState extends ConsumerState<FlightEntryScreen> {
   bool _hasLayover = false;
   bool _busy = false;
 
+  // Flight-number lookup state.
+  static final _flightNoPattern = RegExp(r'^[A-Z0-9]{2,3}\d{1,4}[A-Z]?$');
+  Timer? _lookupDebounce;
+  bool _lookingUp = false;
+  String? _lookupNote;
+  String? _lastLookedUp;
+
   @override
   void dispose() {
+    _lookupDebounce?.cancel();
     _flightNo.dispose();
     _from.dispose();
     _to.dispose();
     _layoverAirport.dispose();
     _layoverMinutes.dispose();
     super.dispose();
+  }
+
+  String get _normalizedFlightNo =>
+      _flightNo.text.trim().toUpperCase().replaceAll(' ', '');
+
+  void _onFlightNoChanged(String _) {
+    _lookupDebounce?.cancel();
+    final fn = _normalizedFlightNo;
+    if (!_flightNoPattern.hasMatch(fn)) {
+      if (_lookupNote != null) setState(() => _lookupNote = null);
+      return;
+    }
+    _lookupDebounce = Timer(const Duration(milliseconds: 800), () => _lookup(fn));
+  }
+
+  /// Calls the `flight-lookup` edge function and pre-fills from/to and the
+  /// scheduled times. Each flight number is looked up once to save API quota.
+  Future<void> _lookup(String fn) async {
+    if (fn == _lastLookedUp) return;
+    _lastLookedUp = fn;
+    setState(() {
+      _lookingUp = true;
+      _lookupNote = null;
+    });
+    try {
+      final res = await ref
+          .read(supabaseClientProvider)
+          .functions
+          .invoke('flight-lookup', body: {'flight_number': fn});
+      final data = res.data as Map<String, dynamic>?;
+      if (!mounted || _normalizedFlightNo != fn) return;
+      if (data == null || data['ok'] != true) {
+        setState(() => _lookupNote = 'Couldn\'t find $fn — fill in the details below.');
+        return;
+      }
+      setState(() {
+        _from.text = data['airport_iata'] as String;
+        if (data['arrival_iata'] != null) _to.text = data['arrival_iata'] as String;
+        _departure = DateTime.parse(data['departure_time'] as String).toLocal();
+        if (data['arrival_time'] != null) {
+          _arrival = DateTime.parse(data['arrival_time'] as String).toLocal();
+        }
+        _lookupNote = 'Filled in from $fn — double-check before saving.';
+      });
+    } catch (_) {
+      if (mounted && _normalizedFlightNo == fn) {
+        setState(() => _lookupNote = 'Couldn\'t find $fn — fill in the details below.');
+      }
+    } finally {
+      if (mounted) setState(() => _lookingUp = false);
+    }
   }
 
   Future<DateTime?> _pickDateTime(DateTime? initial) async {
@@ -126,9 +187,22 @@ class _FlightEntryScreenState extends ConsumerState<FlightEntryScreen> {
             TextField(
               controller: _flightNo,
               textCapitalization: TextCapitalization.characters,
-              decoration: const InputDecoration(
+              onChanged: _onFlightNoChanged,
+              decoration: InputDecoration(
                 labelText: 'Flight number (optional)',
                 hintText: 'AA1234',
+                helperText: _lookupNote ??
+                    'Enter it and we\'ll fill in the rest.',
+                suffixIcon: _lookingUp
+                    ? const Padding(
+                        padding: EdgeInsets.all(14),
+                        child: SizedBox(
+                          height: 16,
+                          width: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      )
+                    : null,
               ),
             ),
             const SizedBox(height: 12),

@@ -16,7 +16,7 @@ The app is **code-complete** for v1 plus the pre-submission UI fixes Apple cares
 2. **Apply manifest snippets.** Paste the contents of `ios/Runner/Info.plist.snippet.xml` into `ios/Runner/Info.plist` (don't replace the file; merge into the top-level `<dict>`). Same for `android/app/src/main/AndroidManifest.snippet.xml`.
 3. **Push the Supabase backend.**
    ```bash
-   supabase link --project-ref rxipszdcbvrevuyqpncq
+   supabase link --project-ref pngjuliouszzhylkimsd
    supabase db push
    psql "$SUPABASE_DB_URL" -f supabase/seed/airports_seed.sql
    psql "$SUPABASE_DB_URL" -f supabase/admin/01_admin_views.sql
@@ -25,7 +25,7 @@ The app is **code-complete** for v1 plus the pre-submission UI fixes Apple cares
 4. **Seed demo users.** From `scripts/`:
    ```bash
    cd scripts && npm install
-   export SUPABASE_URL='https://rxipszdcbvrevuyqpncq.supabase.co'
+   export SUPABASE_URL='https://pngjuliouszzhylkimsd.supabase.co'
    export SUPABASE_SERVICE_ROLE_KEY='<service-role-key from dashboard>'
    npx ts-node seed_demo_users.ts
    ```

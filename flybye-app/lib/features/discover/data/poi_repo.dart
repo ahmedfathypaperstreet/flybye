@@ -56,9 +56,17 @@ class AirportInfo {
 
 /// The combined `airport-pois` payload.
 class AirportPois {
-  AirportPois({required this.airport, required this.pois});
+  AirportPois({
+    required this.airport,
+    required this.pois,
+    this.unavailable = false,
+  });
   final AirportInfo airport;
   final List<Poi> pois;
+
+  /// True when the server couldn't reach its places source, as opposed to the
+  /// airport genuinely having no places.
+  final bool unavailable;
 }
 
 class PoiRepo {
@@ -99,8 +107,12 @@ class PoiRepo {
     final pois = ((map['pois'] as List?) ?? const [])
         .map((e) => Poi.fromJson(Map<String, dynamic>.from(e as Map)))
         .toList();
-    final result = AirportPois(airport: airport, pois: pois);
-    _cache[code] = result;
+    final result = AirportPois(
+      airport: airport,
+      pois: pois,
+      unavailable: map['error'] != null,
+    );
+    if (!result.unavailable) _cache[code] = result;
     return result;
   }
 }
